@@ -1,0 +1,356 @@
+{
+    "ok": true,
+    "captured_at": {
+        "iso": "2026-02-15T00:47:31.135Z",
+        "epoch": 1771116451
+    },
+    "rodada_atual": 4,
+    "status_mercado": 1,
+    "fechamento_timestamp": 1772056740,
+    "times_escalados": 200336,
+    "status_error": "auth_status_failed_404",
+    "data": [
+        {
+            "posicao": "Atacante",
+            "posicao_abreviacao": "ATA",
+            "clube": "GRE",
+            "clube_nome": "GRE",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/GRE/60x60.png",
+            "Atleta": {
+                "nome": "Carlos Vinícius Alves Morais",
+                "apelido": "Carlos Vinícius",
+                "apelido_abreviado": "C. Vinícius",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/GRE/FORMATO.png",
+                "atleta_id": 105563,
+                "preco_editorial": 17
+            },
+            "clube_id": 284,
+            "escalacoes": 87469
+        },
+        {
+            "posicao": "Zagueiro",
+            "posicao_abreviacao": "ZAG",
+            "clube": "PAL",
+            "clube_nome": "PAL",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/PAL/60x60.png",
+            "Atleta": {
+                "nome": "Murilo Cerqueira Paim",
+                "apelido": "Murilo",
+                "apelido_abreviado": "Murilo",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/PAL/FORMATO.png",
+                "atleta_id": 97653,
+                "preco_editorial": 7
+            },
+            "clube_id": 275,
+            "escalacoes": 76803
+        },
+        {
+            "posicao": "Meia",
+            "posicao_abreviacao": "MEI",
+            "clube": "PAL",
+            "clube_nome": "PAL",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/PAL/60x60.png",
+            "Atleta": {
+                "nome": "Maurício Magalhães Prado",
+                "apelido": "Maurício",
+                "apelido_abreviado": "Maurício",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/PAL/FORMATO.png",
+                "atleta_id": 105647,
+                "preco_editorial": 8
+            },
+            "clube_id": 275,
+            "escalacoes": 74517
+        },
+        {
+            "posicao": "Meia",
+            "posicao_abreviacao": "MEI",
+            "clube": "INT",
+            "clube_nome": "INT",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/INT/60x60.png",
+            "Atleta": {
+                "nome": "Alan Patrick Lourenço",
+                "apelido": "Alan Patrick",
+                "apelido_abreviado": "A. Patrick",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/INT/FORMATO.png",
+                "atleta_id": 68685,
+                "preco_editorial": 8
+            },
+            "clube_id": 285,
+            "escalacoes": 67209
+        },
+        {
+            "posicao": "Atacante",
+            "posicao_abreviacao": "ATA",
+            "clube": "PAL",
+            "clube_nome": "PAL",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/PAL/60x60.png",
+            "Atleta": {
+                "nome": "José Manuel Alberto López",
+                "apelido": "Flaco López",
+                "apelido_abreviado": "F. López",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/PAL/FORMATO.png",
+                "atleta_id": 113103,
+                "preco_editorial": 16
+            },
+            "clube_id": 275,
+            "escalacoes": 65970
+        },
+        {
+            "posicao": "Meia",
+            "posicao_abreviacao": "MEI",
+            "clube": "RBB",
+            "clube_nome": "RBB",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/RBB/60x60.png",
+            "Atleta": {
+                "nome": "Gustavo Ribeiro Neves",
+                "apelido": "Gustavinho",
+                "apelido_abreviado": "Gustavinho",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/RBB/FORMATO.png",
+                "atleta_id": 122394,
+                "preco_editorial": 4
+            },
+            "clube_id": 280,
+            "escalacoes": 58911
+        },
+        {
+            "posicao": "Lateral",
+            "posicao_abreviacao": "LAT",
+            "clube": "RBB",
+            "clube_nome": "RBB",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/RBB/60x60.png",
+            "Atleta": {
+                "nome": "Luis Antônio da Rocha Júnior",
+                "apelido": "Juninho Capixaba",
+                "apelido_abreviado": "J. Capixaba",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/RBB/FORMATO.png",
+                "atleta_id": 94968,
+                "preco_editorial": 9
+            },
+            "clube_id": 280,
+            "escalacoes": 58825
+        },
+        {
+            "posicao": "Atacante",
+            "posicao_abreviacao": "ATA",
+            "clube": "CRU",
+            "clube_nome": "CRU",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/CRU/60x60.png",
+            "Atleta": {
+                "nome": "Kaio Jorge Pinto Ramos",
+                "apelido": "Kaio Jorge",
+                "apelido_abreviado": "K. Jorge",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/CRU/FORMATO.png",
+                "atleta_id": 103445,
+                "preco_editorial": 17
+            },
+            "clube_id": 283,
+            "escalacoes": 58716
+        },
+        {
+            "posicao": "Técnico",
+            "posicao_abreviacao": "TEC",
+            "clube": "RBB",
+            "clube_nome": "RBB",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/RBB/60x60.png",
+            "Atleta": {
+                "nome": "Vagner Carmo Mancini",
+                "apelido": "Vagner Mancini",
+                "apelido_abreviado": "V. Mancini",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/RBB/FORMATO.png",
+                "atleta_id": 39850,
+                "preco_editorial": 5
+            },
+            "clube_id": 280,
+            "escalacoes": 55727
+        },
+        {
+            "posicao": "Zagueiro",
+            "posicao_abreviacao": "ZAG",
+            "clube": "RBB",
+            "clube_nome": "RBB",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/RBB/60x60.png",
+            "Atleta": {
+                "nome": "Gustavo Marques Alves dos Santos",
+                "apelido": "Gustavo Marques",
+                "apelido_abreviado": "G. Marques",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/RBB/FORMATO.png",
+                "atleta_id": 110750,
+                "preco_editorial": 3
+            },
+            "clube_id": 280,
+            "escalacoes": 48391
+        },
+        {
+            "posicao": "Goleiro",
+            "posicao_abreviacao": "GOL",
+            "clube": "SAN",
+            "clube_nome": "SAN",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/SAN/60x60.png",
+            "Atleta": {
+                "nome": "Gabriel Nascimento Rezende Brazão - Resende",
+                "apelido": "Gabriel Brazão",
+                "apelido_abreviado": "G. Brazão",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/SAN/FORMATO.png",
+                "atleta_id": 103056,
+                "preco_editorial": 10
+            },
+            "clube_id": 277,
+            "escalacoes": 47634
+        },
+        {
+            "posicao": "Lateral",
+            "posicao_abreviacao": "LAT",
+            "clube": "PAL",
+            "clube_nome": "PAL",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/PAL/60x60.png",
+            "Atleta": {
+                "nome": "Khellven Douglas Silva Oliveira",
+                "apelido": "Khellven",
+                "apelido_abreviado": "Khellven",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/PAL/FORMATO.png",
+                "atleta_id": 105175,
+                "preco_editorial": 7
+            },
+            "clube_id": 275,
+            "escalacoes": 40570
+        },
+        {
+            "posicao": "Lateral",
+            "posicao_abreviacao": "LAT",
+            "clube": "PAL",
+            "clube_nome": "PAL",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/PAL/60x60.png",
+            "Atleta": {
+                "nome": "Joaquín Piquerez Moreira",
+                "apelido": "Piquerez",
+                "apelido_abreviado": "Piquerez",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/PAL/FORMATO.png",
+                "atleta_id": 102130,
+                "preco_editorial": 10
+            },
+            "clube_id": 275,
+            "escalacoes": 36453
+        },
+        {
+            "posicao": "Goleiro",
+            "posicao_abreviacao": "GOL",
+            "clube": "PAL",
+            "clube_nome": "PAL",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/PAL/60x60.png",
+            "Atleta": {
+                "nome": "Carlos Miguel dos Santos Pereira",
+                "apelido": "Carlos Miguel",
+                "apelido_abreviado": "C. Miguel",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/PAL/FORMATO.png",
+                "atleta_id": 104084,
+                "preco_editorial": 9
+            },
+            "clube_id": 275,
+            "escalacoes": 35412
+        },
+        {
+            "posicao": "Atacante",
+            "posicao_abreviacao": "ATA",
+            "clube": "REM",
+            "clube_nome": "REM",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/REM/60x60.png",
+            "Atleta": {
+                "nome": "Alef Mangueira Severino Pereira",
+                "apelido": "Alef Manga",
+                "apelido_abreviado": "A. Manga",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/REM/FORMATO.png",
+                "atleta_id": 101254,
+                "preco_editorial": 5
+            },
+            "clube_id": 364,
+            "escalacoes": 33516
+        },
+        {
+            "posicao": "Meia",
+            "posicao_abreviacao": "MEI",
+            "clube": "SAO",
+            "clube_nome": "SAO",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/SAO/60x60.png",
+            "Atleta": {
+                "nome": "Daniel de Oliveira Sertanejo",
+                "apelido": "Danielzinho",
+                "apelido_abreviado": "Danielzinho",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/SAO/FORMATO.png",
+                "atleta_id": 85403,
+                "preco_editorial": 7
+            },
+            "clube_id": 276,
+            "escalacoes": 32913
+        },
+        {
+            "posicao": "Técnico",
+            "posicao_abreviacao": "TEC",
+            "clube": "INT",
+            "clube_nome": "INT",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/INT/60x60.png",
+            "Atleta": {
+                "nome": "Paulo César Pezzolano Suárez",
+                "apelido": "Paulo Pezzolano",
+                "apelido_abreviado": "P. Pezzolano",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/INT/FORMATO.png",
+                "atleta_id": 115479,
+                "preco_editorial": 6
+            },
+            "clube_id": 285,
+            "escalacoes": 32853
+        },
+        {
+            "posicao": "Técnico",
+            "posicao_abreviacao": "TEC",
+            "clube": "CFC",
+            "clube_nome": "CFC",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/CFC/60x60.png",
+            "Atleta": {
+                "nome": "Fernando Seabra",
+                "apelido": "Fernando Seabra",
+                "apelido_abreviado": "F. Seabra",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/CFC/FORMATO.png",
+                "atleta_id": 126977,
+                "preco_editorial": 4
+            },
+            "clube_id": 294,
+            "escalacoes": 30867
+        },
+        {
+            "posicao": "Zagueiro",
+            "posicao_abreviacao": "ZAG",
+            "clube": "RBB",
+            "clube_nome": "RBB",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/RBB/60x60.png",
+            "Atleta": {
+                "nome": "Pedro Henrique Ribeiro Gonçalves",
+                "apelido": "Pedro Henrique",
+                "apelido_abreviado": "P. Henrique",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/RBB/FORMATO.png",
+                "atleta_id": 87225,
+                "preco_editorial": 7
+            },
+            "clube_id": 280,
+            "escalacoes": 29336
+        },
+        {
+            "posicao": "Atacante",
+            "posicao_abreviacao": "ATA",
+            "clube": "SAO",
+            "clube_nome": "SAO",
+            "escudo_clube": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/escudos/SAO/60x60.png",
+            "Atleta": {
+                "nome": "Jonathan Calleri",
+                "apelido": "Calleri",
+                "apelido_abreviado": "Calleri",
+                "foto": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/clubes_2026/silhuetas/SAO/FORMATO.png",
+                "atleta_id": 89840,
+                "preco_editorial": 14
+            },
+            "clube_id": 276,
+            "escalacoes": 29327
+        }
+    ],
+    "cache": "MISS",
+    "stale": false
+}
