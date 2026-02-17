@@ -57,11 +57,11 @@ def gerar_escalacao(req: OtimizacaoRequest):
             raise HTTPException(status_code=400, detail="Orçamento muito baixo ou filtro impossível.")
 
         #exporta só as colunas que interessam pro Front-end
-        colunas_exportar = ['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Score']
+        colunas_exportar = ['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score']
         escalacao_json = time_ideal[colunas_exportar].to_dict(orient='records')
 
         custo_real = float(time_ideal['C$'].sum())
-        score_projetado = float(time_ideal['Score'].sum())
+        score_projetado = float(time_ideal['Pontuacao_Projetada'].sum())
 
         return {
             "status": "sucesso",

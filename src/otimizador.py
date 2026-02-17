@@ -131,7 +131,7 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     elif not atas.empty: capitao_idx = atas['Pontuacao_Projetada'].idxmax()
     else: capitao_idx = time_ideal[time_ideal['Pos'] != 'tec']['Pontuacao_Projetada'].idxmax()
 
-    time_ideal.loc[capitao_idx, 'Nome'] = f"👑 {time_ideal.loc[capitao_idx, 'Nome']} (C)"
+    time_ideal.loc[capitao_idx, 'Nome'] = f"{time_ideal.loc[capitao_idx, 'Nome']} (C)"
     time_ideal.loc[capitao_idx, 'Pontuacao_Projetada'] = round(time_ideal.loc[capitao_idx, 'Pontuacao_Projetada'] * 1.5, 2)
 
     banco_reservas = [reserva_luxo]
