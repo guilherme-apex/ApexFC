@@ -56,7 +56,7 @@ def gerar_escalacao(req: OtimizacaoRequest):
         if time_ideal is None:
             raise HTTPException(status_code=400, detail="Orçamento muito baixo ou filtro impossível.")
 
-        #exporta só as colunas que interessam pro Front-end
+        # exporta só as colunas que interessam pro Front-end
         colunas_exportar = ['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score']
         escalacao_json = time_ideal[colunas_exportar].to_dict(orient='records')
 
@@ -75,3 +75,21 @@ def gerar_escalacao(req: OtimizacaoRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno no motor: {str(e)}")
+
+@app.get("/api/v1/jogadores")
+def listar_jogadores():
+    try:
+        df_jogadores = processar_jogadores()
+        if df_jogadores is None or df_jogadores.empty:
+            raise HTTPException(status_code=500, detail="Erro ao carregar a base de dados.")
+            
+        colunas = ['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score']
+        
+        df_limpo = df_jogadores[colunas].fillna(0).copy()
+        
+        return {
+            "status": "sucesso",
+            "jogadores": df_limpo.to_dict(orient='records')
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao listar jogadores: {str(e)}")
