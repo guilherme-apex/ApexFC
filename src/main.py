@@ -99,10 +99,14 @@ def processar_jogadores():
             elif posicao_atual == 'ata': peso_posicao = 4.0
             else: peso_posicao = 3.5
             
+            # Pontuação Esperada
             if posicao_atual == 'tec':
-                score_final = (prob_vitoria / 100) * 8.0 
+                pontuacao_projetada = (prob_vitoria / 100) * 8.0 
             else:
-                score_final = mb + ((prob_vitoria / 100) * peso_posicao)
+                pontuacao_projetada = mb + ((prob_vitoria / 100) * peso_posicao)
+            
+            # Cálculo do Score de 1 a 100
+            score_100 = min((pontuacao_projetada / 15.0) * 100, 100.0)
             
             jogadores_processados.append({
                 'Nome': atleta['apelido'],
@@ -114,7 +118,8 @@ def processar_jogadores():
                 'MB': mb,
                 'MPV': mpv,
                 'Vit(%)': prob_vitoria,
-                'Score': round(score_final, 2)
+                'Pontuacao_Projetada': round(pontuacao_projetada, 2),
+                'Score': round(score_100, 1)
             })
             
     df = pd.DataFrame(jogadores_processados)

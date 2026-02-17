@@ -53,16 +53,15 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     prob = pulp.LpProblem("Cartola_Otimizacao", pulp.LpMaximize)
     escolha = pulp.LpVariable.dicts("escolha", jogadores, cat='Binary')
 
-    # função objetivo e filtro FOMO(> 40%)
     termos_objetivo = []
-    fomo_threshold = total_times * 0.40 # linha de corte de 40%
+    fomo_threshold = total_times * 0.40
 
     for i in jogadores:
-        score_base = df_linha.loc[i, 'Score']
+        proj_base = df_linha.loc[i, 'Pontuacao_Projetada']
         nome_jogador = df_linha.loc[i, 'Nome']
         
-        peso = score_base
-        if modo == 'valorizacao': peso = score_base - df_linha.loc[i, 'MPV']
+        peso = proj_base
+        if modo == 'valorizacao': peso = proj_base - df_linha.loc[i, 'MPV']
         elif modo == 'classico' and nome_jogador in dados_fomo:
             escalacoes = dados_fomo[nome_jogador]
             if escalacoes >= fomo_threshold:
@@ -74,10 +73,8 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
 
     prob += pulp.lpSum(termos_objetivo), "Objetivo_Principal"
     
-    # restrição de orçamento total
     prob += pulp.lpSum(df_linha.loc[i, 'C$'] * escolha[i] for i in jogadores) <= orcamento_linha, "Custo_Total"
 
-    # senso de orçamento (min 55% da grana no ataque/meio)
     custo_frente = pulp.lpSum(df_linha.loc[i, 'C$'] * escolha[i] for i in jogadores if df_linha.loc[i, 'Pos'] in ['ata', 'mei'])
     prob += custo_frente >= (orcamento_linha * 0.55), "Orcamento_Frente_Minimo"
 
@@ -87,7 +84,6 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     prob += pulp.lpSum(escolha[i] for i in jogadores if df_linha.loc[i, 'Pos'] == 'mei') == restricoes_taticas['mei']
     prob += pulp.lpSum(escolha[i] for i in jogadores if df_linha.loc[i, 'Pos'] == 'ata') == restricoes_taticas['ata']
 
-    # trava anti-zika
     if evitar_confrontos:
         confrontos_processados = set()
         for i in jogadores:
@@ -126,22 +122,19 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     time_ideal = time_bruto.drop(reserva_luxo.name)
     time_ideal = pd.concat([time_ideal, pd.DataFrame([tec_escolhido])])
 
-    # capitão
     atas = time_ideal[time_ideal['Pos'] == 'ata']
     meis = time_ideal[time_ideal['Pos'] == 'mei']
-    max_ata_score = atas['Score'].max() if not atas.empty else 0
-    max_mei_score = meis['Score'].max() if not meis.empty else 0
+    max_ata_score = atas['Pontuacao_Projetada'].max() if not atas.empty else 0
+    max_mei_score = meis['Pontuacao_Projetada'].max() if not meis.empty else 0
     
-    if max_mei_score > (max_ata_score * 1.20): capitao_idx = meis['Score'].idxmax()
-    elif not atas.empty: capitao_idx = atas['Score'].idxmax()
-    else: capitao_idx = time_ideal[time_ideal['Pos'] != 'tec']['Score'].idxmax()
+    if max_mei_score > (max_ata_score * 1.20): capitao_idx = meis['Pontuacao_Projetada'].idxmax()
+    elif not atas.empty: capitao_idx = atas['Pontuacao_Projetada'].idxmax()
+    else: capitao_idx = time_ideal[time_ideal['Pos'] != 'tec']['Pontuacao_Projetada'].idxmax()
 
     time_ideal.loc[capitao_idx, 'Nome'] = f"👑 {time_ideal.loc[capitao_idx, 'Nome']} (C)"
-    if time_ideal.loc[capitao_idx, 'Score'] < 500: #evita multiplicar o peso do FOMO
-        time_ideal.loc[capitao_idx, 'Score'] = time_ideal.loc[capitao_idx, 'Score'] * 1.5
+    time_ideal.loc[capitao_idx, 'Pontuacao_Projetada'] = round(time_ideal.loc[capitao_idx, 'Pontuacao_Projetada'] * 1.5, 2)
 
     banco_reservas = [reserva_luxo]
-    
     restricoes_taticas[setor_luxo] -= 1 
     
     for pos, qtd in restricoes_taticas.items():
@@ -153,7 +146,7 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
                                      (df_linha['Pos'] == pos) & 
                                      (df_linha['C$'] <= preco_corte)]
                 if not candidatos.empty:
-                    melhor_reserva = candidatos.loc[candidatos['Score'].idxmax()].copy()
+                    melhor_reserva = candidatos.loc[candidatos['Pontuacao_Projetada'].idxmax()].copy()
                     melhor_reserva['Tipo'] = pos.upper()
                     banco_reservas.append(melhor_reserva)
 
@@ -163,18 +156,15 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     time_ideal.index = range(1, len(time_ideal) + 1)
 
     custo_total = time_ideal['C$'].sum()
-    score_projetado = time_ideal['Score'].sum()
+    score_projetado = time_ideal['Pontuacao_Projetada'].sum()
 
     print(f"\n==================================================")
     print(f"ESCALAÇÃO: {esquema} | MODO: {modo.upper()} | ANTI-ZIKA: {'LIGADO' if evitar_confrontos else 'DESLIGADO'}")
     print(f"==================================================")
     print(f"Orçamento Utilizado: C$ {custo_total:.2f} / C$ {orcamento:.2f}")
+    print(f"Pontuação Projetada:     {score_projetado:.2f} pts\n")
     
-    time_ideal['Score_Exibicao'] = time_ideal['Score'].apply(lambda x: x if x < 500 else x - 1000)
-    score_real = time_ideal['Score_Exibicao'].sum()
-    print(f"Score Projetado:     {score_real:.2f} pts\n")
-    
-    print(time_ideal[['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Score_Exibicao']].rename(columns={'Score_Exibicao': 'Score'}).to_string())
+    print(time_ideal[['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score']].to_string())
     
     print(f"\n==================================================")
     print(f"BANCO DE RESERVAS")
@@ -182,8 +172,7 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     if banco_reservas:
         df_banco = pd.DataFrame(banco_reservas)
         df_banco['Nome'] = df_banco['Nome'].apply(lambda x: f"{x} [LUXO]" if x == reserva_luxo['Nome'] else x)
-        df_banco['Score_Exibicao'] = df_banco['Score'].apply(lambda x: x if x < 500 else x - 1000)
-        print(df_banco[['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Score_Exibicao']].rename(columns={'Score_Exibicao': 'Score'}).to_string(index=False))
+        print(df_banco[['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score']].to_string(index=False))
 
     return time_ideal
 
