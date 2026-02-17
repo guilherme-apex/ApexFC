@@ -28,8 +28,10 @@ def carregar_mais_escalados():
             return fomo_dict, total_times
     except Exception: return {}, 1
 
-def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', times_ignorados=None, evitar_confrontos=True):
+def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', times_ignorados=None, jogadores_travados=None, evitar_confrontos=True):
     if times_ignorados is None: times_ignorados = []
+    if jogadores_travados is None: jogadores_travados = []
+    
     df_filtrado = df[~df['Clube'].isin(times_ignorados)].copy()
     
     if esquema not in FORMACAOS: esquema = '4-3-3'
@@ -84,6 +86,13 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     prob += pulp.lpSum(escolha[i] for i in jogadores if df_linha.loc[i, 'Pos'] == 'mei') == restricoes_taticas['mei']
     prob += pulp.lpSum(escolha[i] for i in jogadores if df_linha.loc[i, 'Pos'] == 'ata') == restricoes_taticas['ata']
 
+    # --- A MÁGICA DO CADEADO ---
+    for nome_travado in jogadores_travados:
+        idx_lista = df_linha[df_linha['Nome'] == nome_travado].index.tolist()
+        if idx_lista:
+            # Força o motor a escalar o jogador (variável == 1)
+            prob += escolha[idx_lista[0]] == 1, f"Trava_{idx_lista[0]}"
+
     if evitar_confrontos:
         confrontos_processados = set()
         for i in jogadores:
@@ -109,7 +118,7 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     escolhidos_idx = [i for i in jogadores if escolha[i].varValue == 1]
     
     if not escolhidos_idx:
-        print("O algoritmo não encontrou escalação possível (tente afrouxar o orçamento).")
+        print("O algoritmo não encontrou escalação possível (tente afrouxar o orçamento ou tirar alguns cadeados).")
         return None
 
     time_bruto = df_linha.loc[escolhidos_idx].copy()
@@ -131,7 +140,8 @@ def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', 
     elif not atas.empty: capitao_idx = atas['Pontuacao_Projetada'].idxmax()
     else: capitao_idx = time_ideal[time_ideal['Pos'] != 'tec']['Pontuacao_Projetada'].idxmax()
 
-    time_ideal.loc[capitao_idx, 'Nome'] = f"{time_ideal.loc[capitao_idx, 'Nome']} (C)"
+    # Ajuste na coroa do Capitão
+    time_ideal.loc[capitao_idx, 'Nome'] = f"👑 {time_ideal.loc[capitao_idx, 'Nome']} (C)"
     time_ideal.loc[capitao_idx, 'Pontuacao_Projetada'] = round(time_ideal.loc[capitao_idx, 'Pontuacao_Projetada'] * 1.5, 2)
 
     banco_reservas = [reserva_luxo]
@@ -185,5 +195,6 @@ if __name__ == "__main__":
             esquema='4-3-3', 
             modo='classico', 
             times_ignorados=[],
+            jogadores_travados=["Piquerez"], # Teste de trava
             evitar_confrontos=True 
         )

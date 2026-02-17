@@ -32,12 +32,13 @@ class OtimizacaoRequest(BaseModel):
     esquema: str = "4-3-3"
     modo: str = "classico"
     times_ignorados: List[str] = []
+    jogadores_travados: List[str] = []
     evitar_confrontos: bool = True
 
 @app.post("/api/v1/otimizar")
 def gerar_escalacao(req: OtimizacaoRequest):
     try:
-        print("Engrenando o motor de dados via API...")
+        print(f"Engrenando o motor... Travados: {req.jogadores_travados}")
         df_jogadores = processar_jogadores()
         
         if df_jogadores is None or df_jogadores.empty:
@@ -51,6 +52,7 @@ def gerar_escalacao(req: OtimizacaoRequest):
             esquema=req.esquema,
             modo=req.modo,
             times_ignorados=req.times_ignorados,
+            jogadores_travados=req.jogadores_travados,
             evitar_confrontos=req.evitar_confrontos
         )
 
