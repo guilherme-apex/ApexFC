@@ -1,6 +1,7 @@
 import os
 import sys
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 
@@ -14,8 +15,17 @@ app = FastAPI(
     description="Otimização linear e DFS para dominar ligas clássicas e de tiro curto no Cartola FC",
     version="1.0.0",
     contact={
-        "name": "Guilherme Lopes de Souza"
+        "name": "Apex Fantasy®"
     }
+)
+
+# libera o acesso ao front end
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 class OtimizacaoRequest(BaseModel):
