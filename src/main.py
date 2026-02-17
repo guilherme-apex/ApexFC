@@ -74,10 +74,10 @@ def processar_jogadores():
     
     jogadores_processados = []
     
-    # REMOVIDO: O bloqueio de status. Agora todos os jogadores entram na base.
     for atleta in dados_mercado['atletas']:
         clube_id = atleta['clube_id']
-        if str(clube_id) not in clubes_validos: continue
+        # AQUI ESTAVA O BUG: Removi o "str()" que estava anulando a base inteira
+        if clube_id not in clubes_validos: continue
             
         status_atual = status_dict.get(str(atleta['status_id']), 'N/A')
         posicao_atual = posicoes.get(str(atleta['posicao_id']), 'N/A')
@@ -105,8 +105,7 @@ def processar_jogadores():
         else:
             pontuacao_projetada = mb + ((prob_vitoria / 100) * peso_posicao)
         
-        # --- A NOVA FÓRMULA DE SCORE APEX (Cumulativa e sem limites) ---
-        # Ex: Pontuação Projetada (x8) + Probabilidade de Vitória (x0.2) + Média Básica (x2) + Bônus Casa
+        # --- A NOVA FÓRMULA DE SCORE APEX (Sem teto, focada em EV real) ---
         score_apex = (pontuacao_projetada * 8.0) + (prob_vitoria * 0.2) + (mb * 2.0)
         if mando == 'Casa': score_apex += 5.0 
         
@@ -123,12 +122,13 @@ def processar_jogadores():
             'MPV': mpv,
             'Vit(%)': prob_vitoria,
             'Pontuacao_Projetada': round(pontuacao_projetada, 2),
-            'Score': round(max(score_apex, 0.0), 1) # Impede scores negativos na interface
+            'Score': round(max(score_apex, 0.0), 1)
         })
         
     df = pd.DataFrame(jogadores_processados)
-    df = df.sort_values(by='Score', ascending=False).reset_index(drop=True)
-    df.index += 1
+    if not df.empty:
+        df = df.sort_values(by='Score', ascending=False).reset_index(drop=True)
+        df.index += 1
     
     return df
 
