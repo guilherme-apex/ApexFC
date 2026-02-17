@@ -19,7 +19,6 @@ app = FastAPI(
     }
 )
 
-# libera o acesso ao front end
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -44,8 +43,10 @@ def gerar_escalacao(req: OtimizacaoRequest):
         if df_jogadores is None or df_jogadores.empty:
             raise HTTPException(status_code=500, detail="Erro ao carregar a base de dados.")
 
+        df_provaveis = df_jogadores[df_jogadores['Status'] == 'Provável'].copy()
+
         time_ideal = otimizar_escalacao(
-            df=df_jogadores,
+            df=df_provaveis,
             orcamento=req.orcamento,
             esquema=req.esquema,
             modo=req.modo,
@@ -56,8 +57,7 @@ def gerar_escalacao(req: OtimizacaoRequest):
         if time_ideal is None:
             raise HTTPException(status_code=400, detail="Orçamento muito baixo ou filtro impossível.")
 
-        # exporta só as colunas que interessam pro Front-end
-        colunas_exportar = ['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score']
+        colunas_exportar = ['Nome', 'Clube', 'Escudo', 'Adv', 'Mando', 'Pos', 'Status', 'C$', 'Pontuacao_Projetada', 'Score', 'MPV', 'MB']
         escalacao_json = time_ideal[colunas_exportar].to_dict(orient='records')
 
         custo_real = float(time_ideal['C$'].sum())
@@ -83,8 +83,7 @@ def listar_jogadores():
         if df_jogadores is None or df_jogadores.empty:
             raise HTTPException(status_code=500, detail="Erro ao carregar a base de dados.")
             
-        colunas = ['Nome', 'Clube', 'Adv', 'Mando', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score', 'MPV', 'MB']
-        
+        colunas = ['Nome', 'Clube', 'Escudo', 'Adv', 'Mando', 'Pos', 'Status', 'C$', 'Pontuacao_Projetada', 'Score', 'MPV', 'MB']
         df_limpo = df_jogadores[colunas].fillna(0).copy()
         
         return {

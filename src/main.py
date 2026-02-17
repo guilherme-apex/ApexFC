@@ -35,8 +35,8 @@ def obter_status_confrontos(dados_partidas, dicionario_clubes):
         if p.get('valida', False):
             id_casa = p['clube_casa_id']
             id_fora = p['clube_visitante_id']
-            sigla_casa = dicionario_clubes.get(str(id_casa), 'N/A')
-            sigla_fora = dicionario_clubes.get(str(id_fora), 'N/A')
+            sigla_casa = dicionario_clubes.get(str(id_casa), {}).get('abreviacao', 'N/A')
+            sigla_fora = dicionario_clubes.get(str(id_fora), {}).get('abreviacao', 'N/A')
             
             status_clubes[id_casa] = {'Mando': 'Casa', 'Adv': sigla_fora}
             status_clubes[id_fora] = {'Mando': 'Fora', 'Adv': sigla_casa}
@@ -49,7 +49,7 @@ def processar_jogadores():
     
     if not dados_mercado or not dados_partidas: return
         
-    clubes = {str(k): v['abreviacao'] for k, v in dados_mercado['clubes'].items()}
+    clubes = {str(k): {'abreviacao': v['abreviacao'], 'escudo': v.get('escudos', {}).get('60x60', '')} for k, v in dados_mercado['clubes'].items()}
     status_confrontos = obter_status_confrontos(dados_partidas, clubes)
     clubes_validos = set(status_confrontos.keys())
     
@@ -74,54 +74,58 @@ def processar_jogadores():
     
     jogadores_processados = []
     
+    # REMOVIDO: O bloqueio de status. Agora todos os jogadores entram na base.
     for atleta in dados_mercado['atletas']:
         clube_id = atleta['clube_id']
-        if clube_id not in clubes_validos: continue
+        if str(clube_id) not in clubes_validos: continue
             
         status_atual = status_dict.get(str(atleta['status_id']), 'N/A')
-        jogos = atleta.get('jogos_num', 0)
         posicao_atual = posicoes.get(str(atleta['posicao_id']), 'N/A')
         
-        if status_atual == 'Provável' and (jogos > 0 or posicao_atual == 'tec'):
-            scouts = atleta.get('scout', {})
-            mb = calcular_media_basica(atleta, scouts) if posicao_atual != 'tec' else 0.0
-            preco = atleta['preco_num']
-            sigla_clube = clubes.get(str(clube_id), 'N/A')
-            
-            info_confronto = status_confrontos[clube_id]
-            mando = info_confronto['Mando']
-            adversario = info_confronto['Adv']
-            
-            mpv = calcular_mpv(preco)
-            prob_vitoria = odds_por_sigla.get(sigla_clube, 30.0)
-            
-            if posicao_atual in ['gol', 'zag', 'lat']: peso_posicao = 5.0
-            elif posicao_atual == 'ata': peso_posicao = 4.0
-            else: peso_posicao = 3.5
-            
-            # Pontuação Esperada
-            if posicao_atual == 'tec':
-                pontuacao_projetada = (prob_vitoria / 100) * 8.0 
-            else:
-                pontuacao_projetada = mb + ((prob_vitoria / 100) * peso_posicao)
-            
-            # Cálculo do Score de 1 a 100
-            score_100 = min((pontuacao_projetada / 15.0) * 100, 100.0)
-            
-            jogadores_processados.append({
-                'Nome': atleta['apelido'],
-                'Clube': sigla_clube,
-                'Adv': adversario,
-                'Pos': posicao_atual,
-                'Mando': mando,
-                'C$': preco,
-                'MB': mb,
-                'MPV': mpv,
-                'Vit(%)': prob_vitoria,
-                'Pontuacao_Projetada': round(pontuacao_projetada, 2),
-                'Score': round(score_100, 1)
-            })
-            
+        scouts = atleta.get('scout', {})
+        mb = calcular_media_basica(atleta, scouts) if posicao_atual != 'tec' else 0.0
+        preco = atleta['preco_num']
+        info_clube = clubes.get(str(clube_id), {})
+        sigla_clube = info_clube.get('abreviacao', 'N/A')
+        escudo_clube = info_clube.get('escudo', '')
+        
+        info_confronto = status_confrontos.get(clube_id, {'Mando': 'N/A', 'Adv': 'N/A'})
+        mando = info_confronto['Mando']
+        adversario = info_confronto['Adv']
+        
+        mpv = calcular_mpv(preco)
+        prob_vitoria = odds_por_sigla.get(sigla_clube, 30.0)
+        
+        if posicao_atual in ['gol', 'zag', 'lat']: peso_posicao = 5.0
+        elif posicao_atual == 'ata': peso_posicao = 4.0
+        else: peso_posicao = 3.5
+        
+        if posicao_atual == 'tec':
+            pontuacao_projetada = (prob_vitoria / 100) * 8.0 
+        else:
+            pontuacao_projetada = mb + ((prob_vitoria / 100) * peso_posicao)
+        
+        # --- A NOVA FÓRMULA DE SCORE APEX (Cumulativa e sem limites) ---
+        # Ex: Pontuação Projetada (x8) + Probabilidade de Vitória (x0.2) + Média Básica (x2) + Bônus Casa
+        score_apex = (pontuacao_projetada * 8.0) + (prob_vitoria * 0.2) + (mb * 2.0)
+        if mando == 'Casa': score_apex += 5.0 
+        
+        jogadores_processados.append({
+            'Nome': atleta['apelido'],
+            'Clube': sigla_clube,
+            'Escudo': escudo_clube,
+            'Adv': adversario,
+            'Pos': posicao_atual,
+            'Mando': mando,
+            'Status': status_atual,
+            'C$': preco,
+            'MB': mb,
+            'MPV': mpv,
+            'Vit(%)': prob_vitoria,
+            'Pontuacao_Projetada': round(pontuacao_projetada, 2),
+            'Score': round(max(score_apex, 0.0), 1) # Impede scores negativos na interface
+        })
+        
     df = pd.DataFrame(jogadores_processados)
     df = df.sort_values(by='Score', ascending=False).reset_index(drop=True)
     df.index += 1
