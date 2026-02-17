@@ -83,7 +83,7 @@ def listar_jogadores():
         if df_jogadores is None or df_jogadores.empty:
             raise HTTPException(status_code=500, detail="Erro ao carregar a base de dados.")
             
-        colunas = ['Nome', 'Clube', 'Adv', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score']
+        colunas = ['Nome', 'Clube', 'Adv', 'Mando', 'Pos', 'C$', 'Pontuacao_Projetada', 'Score', 'MPV', 'MB']
         
         df_limpo = df_jogadores[colunas].fillna(0).copy()
         
