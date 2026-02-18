@@ -1,8 +1,13 @@
+import os
+import sys
 import requests
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
+
+# --- CORREÇÃO DO ERRO DE DEPLOY: Mostra ao Render onde estão os arquivos ---
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from main import processar_jogadores
 from otimizador import otimizar_escalacao
@@ -32,10 +37,10 @@ def proxy_imagem(url: str):
 class OtimizacaoRequest(BaseModel):
     orcamento: float = 110.0
     esquema: str = "4-3-3"
-    modo: str = "classico" # Agora aceita 'valorizacao'
+    modo: str = "classico"
     times_ignorados: List[str] = []
     jogadores_travados: List[str] = []
-    jogadores_ignorados: List[str] = [] # --- A NOVA BLACKLIST ---
+    jogadores_ignorados: List[str] = []
     evitar_confrontos: bool = True
 
 @app.post("/api/v1/otimizar")
@@ -48,14 +53,15 @@ def gerar_escalacao(req: OtimizacaoRequest):
 
         df_provaveis = df_jogadores[df_jogadores['Status'] == 'Provável'].copy()
 
+        # Correção no req.modo (tirando o duplicado req.req.modo se houvesse)
         time_ideal = otimizar_escalacao(
             df=df_provaveis,
             orcamento=req.orcamento,
             esquema=req.esquema,
-            modo=req.req.modo if hasattr(req, 'modo') else req.modo,
+            modo=req.modo,
             times_ignorados=req.times_ignorados,
             jogadores_travados=req.jogadores_travados,
-            jogadores_ignorados=req.jogadores_ignorados, # Repassando para o motor
+            jogadores_ignorados=req.jogadores_ignorados,
             evitar_confrontos=req.evitar_confrontos
         )
 
