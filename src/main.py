@@ -122,7 +122,8 @@ def processar_jogadores():
             'MPV': mpv,
             'Vit(%)': prob_vitoria,
             'Pontuacao_Projetada': round(pontuacao_projetada, 2),
-            'Score': round(max(score_apex, 0.0), 1)
+            'Score': round(max(score_apex, 0.0), 1),
+            'Scouts': scouts
         })
         
     df = pd.DataFrame(jogadores_processados)
