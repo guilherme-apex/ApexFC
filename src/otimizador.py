@@ -28,11 +28,16 @@ def carregar_mais_escalados():
             return fomo_dict, total_times
     except Exception: return {}, 1
 
-def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', times_ignorados=None, jogadores_travados=None, evitar_confrontos=True):
+# ADICIONADO: parâmetro jogadores_ignorados
+def otimizar_escalacao(df, orcamento=100.0, esquema='4-3-3', modo='tiro_curto', times_ignorados=None, jogadores_travados=None, jogadores_ignorados=None, evitar_confrontos=True):
     if times_ignorados is None: times_ignorados = []
     if jogadores_travados is None: jogadores_travados = []
+    if jogadores_ignorados is None: jogadores_ignorados = []
     
     df_filtrado = df[~df['Clube'].isin(times_ignorados)].copy()
+    
+    # ADICIONADO: Remove da lista os jogadores que estão na Blacklist (Lixeira) antes do robô pensar
+    df_filtrado = df_filtrado[~df_filtrado['Nome'].isin(jogadores_ignorados)]
     
     if esquema not in FORMACAOS: esquema = '4-3-3'
     restricoes_taticas = FORMACAOS[esquema].copy()
@@ -196,5 +201,6 @@ if __name__ == "__main__":
             modo='classico', 
             times_ignorados=[],
             jogadores_travados=["Piquerez"], # Teste de trava
+            jogadores_ignorados=[], # ADICIONADO: Teste vazio da blacklist
             evitar_confrontos=True 
         )
